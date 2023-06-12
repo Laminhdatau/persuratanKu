@@ -13,9 +13,5 @@ class Dashboard extends BaseController
         return view('dashboard',$data);
     }
 
-    public function surat_masuk()
-    {
-        $data['title'] = "Surat Masuk";
-        return view('surat_masuk/surat_masuk',$data);
-    }
+   
 }

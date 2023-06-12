@@ -32,7 +32,7 @@
         <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #11009E;">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('assets/'); ?>index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('dashboard'); ?>">
                 <div class="sidebar-brand-icon">
                     <i class="fas fa-envelope"></i>
                 </div>
@@ -44,47 +44,49 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('assets/'); ?>index.html">
+                <a class="nav-link" href="<?= base_url('dashboard'); ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
 
-         
+
 
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>">
+                <a class="nav-link" href="<?= base_url('surat_masuk'); ?>">
                     <i class="fas fa-fw fa-envelope"></i>
                     <span>Surat Masuk</span>
-                    <span class="ml-5 badge badge-danger">3</span> <!-- Contoh jumlah notifikasi -->
+                    <span class="ml-5 badge float-right badge-danger">3</span> <!-- Contoh jumlah notifikasi -->
                 </a>
             </li>
 
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>">
+                <a class="nav-link" href="<?= base_url('surat_keluar'); ?>">
                     <i class="fas fa-fw fa-envelope"></i>
                     <span>Surat Keluar</span>
-                    <span class="ml-5 badge badge-danger">3</span>
+                    <span class="ml-5 badge float-right badge-danger">3</span> <!-- Contoh jumlah notifikasi -->
+
                 </a>
 
             </li>
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>">
+                <a class="nav-link" href="<?= base_url('surat_tugas'); ?>">
                     <i class="fas fa-fw fa-envelope"></i>
                     <span>Surat Tugas</span>
-                    <span class="ml-5 badge badge-danger">3</span> <!-- Contoh jumlah notifikasi -->
+                    <span class="ml-5 badge float-right badge-danger">3</span> <!-- Contoh jumlah notifikasi -->
+
                 </a>
             </li>
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url(); ?>">
+                <a class="nav-link" href="<?= base_url('nota_dinas'); ?>">
                     <i class="fas fa-fw fa-envelope"></i>
                     <span>Nota Dinas</span>
-                    <span class="ml-5 badge badge-danger">3</span> <!-- Contoh jumlah notifikasi -->
+                    <span class="ml-5 badge float-right badge-danger">3</span> <!-- Contoh jumlah notifikasi -->
                 </a>
             </li>
 
@@ -118,7 +120,7 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="<?= base_url('assets/'); ?>#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
                                 <img class="img-profile rounded-circle" src="<?= base_url('assets/'); ?>img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -129,7 +131,7 @@
                                 </a>
 
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="<?= base_url('assets/'); ?>#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="<?= base_url('auth/'); ?>#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
