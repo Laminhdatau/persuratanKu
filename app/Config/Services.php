@@ -29,4 +29,18 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+    public static function helpers()
+    {
+        return [
+            // Daftar helper bawaan CodeIgniter
+            'url',
+            'text',
+            'cookie',
+            'form',
+            'date',
+
+            // Tambahkan helper custom
+            'auth_helper',
+        ];
+    }
 }

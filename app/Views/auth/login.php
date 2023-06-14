@@ -23,14 +23,20 @@
                                     <h1 class="h4 text-gray-900 mb-4">Silahkan Login</h1>
                                 </div>
 
+                                <?php if (session()->has('error')) : ?>
+                                    <h1 class="h6 text-gray-900 mb-4"><?= session('error') ?></h1>
+                                <?php endif; ?>
 
-                                <form class="user" method="get" action="<?= base_url('dashboard'); ?>">
+
+                                <form class="user" method="post" action="<?= base_url('login/prosesLogin') ?>">
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user" id="email" name="email" placeholder="Masukan Username">
+                                        <input type="email" class="form-control form-control-user" id="email" name="email" placeholder="Masukan Username" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user" id="password" name="password" placeholder=" Masukan Password">
+                                        <input type="password" class="form-control form-control-user" id="password" name="password" placeholder=" Masukan Password" required>
                                     </div>
+
+                               
                                     <button type="submit" class="btn btn-user btn-block" style="background-color: #11009E;color: aliceblue;">
                                         Login
                                     </button>
