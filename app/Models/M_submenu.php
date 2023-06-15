@@ -8,5 +8,5 @@ class M_submenu extends Model
 {
     protected $table = 't_sub_menu';
     protected $primaryKey = 'id_sub_menu';
-    protected $allowedFields = ['id_menu', 'title','url','url','is_active'];
+    protected $allowedFields = ['id_menu', 'title','url','icon','is_active'];
 }

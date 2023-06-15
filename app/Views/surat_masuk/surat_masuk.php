@@ -29,7 +29,8 @@
                             <td class="col-4">
                                 <p>Munawir Sadzali Razak</p>
                                 <p>Kepala Lembaga Layanan Pendidikan Tinggi Wilayah XVI
-                                <span><button class="badge badge-success float-right">Proses Kirim</button></span></p>
+                                    <span><button class="badge badge-success float-right">Proses Kirim</button></span>
+                                </p>
                             </td>
                             <td class="col-5">
                                 <p>0802/LL16/KL00.01/2023 <span class="float-right"><?= date('d-Y-m'); ?></span></p>
@@ -47,7 +48,8 @@
                             <td class="col-4">
                                 <p>Munawir Sadzali Razak</p>
                                 <p>Kepala Lembaga Layanan Pendidikan Tinggi Wilayah XVI
-                                <span><button class="badge badge-success float-right">Proses Kirim</button></span></p>
+                                    <span><button class="badge badge-success float-right">Proses Kirim</button></span>
+                                </p>
                             </td>
                             <td class="col-5">
                                 <p>0802/LL16/KL00.01/2023 <span class="float-right"><?= date('d-Y-m'); ?></span></p>
@@ -71,7 +73,5 @@
 </div>
 <!-- /.container-fluid -->
 
-</div>
-<!-- End of Main Content -->
 
 <?= $this->endSection(); ?>

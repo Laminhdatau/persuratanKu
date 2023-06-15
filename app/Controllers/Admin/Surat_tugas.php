@@ -7,12 +7,17 @@ use App\Controllers\BaseController;
 class Surat_tugas extends BaseController
 {
 
-   
+
 
     public function index()
     {
         $data['title'] = "Surat Tugas";
-        return view('surat_tugas/surat_tugas',$data);
+        return view('surat_tugas/surat_tugasl', $data);
     }
 
+    public function suratTugasp()
+    {
+        $data['title'] = "Surat Tugas";
+        return view('surat_tugas/surat_tugasp', $data);
+    }
 }

@@ -7,12 +7,7 @@ use App\Controllers\BaseController;
 
 class Menu extends BaseController
 {
-    // protected $akuHelper;
-
-    // public function __construct()
-    // {
-    //     $this->akuHelper = new AkuHelper();
-    // }
+   
 
     public function index()
     {
@@ -20,11 +15,9 @@ class Menu extends BaseController
         $m_menu = new M_menu();
         $menu = $m_menu->findAll();
 
-        // Pass the menu data to the view
         $data['title'] = "Menu";
         $data['menu'] = $menu;
 
-        // Load the view and pass the data
         return view('menu/menu', $data);
     }
 

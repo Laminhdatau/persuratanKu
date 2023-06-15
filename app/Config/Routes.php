@@ -41,7 +41,23 @@ $routes->post('/createMenu', 'Super\Menu::create');
 $routes->post('/updateMenu', 'Super\\Menu::update');
 $routes->post('/deleteMenu', 'Super\\Menu::delete');
 
+// SUBMENU
+$routes->get('/submenu', 'Super\\Submenu::index');
+$routes->post('/createSubMenu', 'Super\Submenu::create');
+$routes->post('/updateSubMenu', 'Super\\Submenu::update');
+$routes->post('/deleteSubMenu', 'Super\\Submenu::delete');
 
+// Akses Menu
+$routes->get('/akses', 'Super\\Aksesmenu::index');
+$routes->post('/createAksesMenu', 'Super\Aksesmenu::create');
+$routes->post('/updateAksesMenu', 'Super\\Aksesmenu::update');
+$routes->post('/deleteAksesMenu', 'Super\\Aksesmenu::delete');
+
+//SURAT
+$routes->get('/reffSurat', 'Admin\\Reffsurat::index');
+$routes->post('/createReff', 'Admin\Reffsurat::create');
+$routes->post('/updateReff', 'Admin\\Reffsurat::update');
+$routes->post('/deleteReff', 'Admin\\Reffsurat::delete');
 
 
 

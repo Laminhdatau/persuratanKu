@@ -8,9 +8,5 @@ class Dashboard extends BaseController
 {
     public function index()
     {
-        $data=new Auth();
-
-        
     }
-
 }
