@@ -40,7 +40,7 @@ class Services extends BaseService
             'date',
 
             // Tambahkan helper custom
-            'auth_helper',
+            'AkuHelper',
         ];
     }
 }

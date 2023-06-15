@@ -46,59 +46,56 @@
             <li class="nav-item">
                 <a class="nav-link" href="<?= base_url('dashboard'); ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dashboard</span>
+                </a>
             </li>
-
 
             <?php
             $session = session();
             $uname = $session->get('nama_lengkap');
             $pf = $session->get('foto');
-            $level = $session->get('level');
-
-            // dd($level);
+            $level = $session->get('id_level');
 
             $m_menu = new \App\Models\M_menu();
             $m_sub = new \App\Models\M_submenu();
+            $m_akses = new \App\Models\M_akses_menu();
             $m_jenissurat = new \App\Models\M_jenis_surat();
             $menu = $m_menu->findAll();
             $sub = $m_sub->findAll();
+            $aks = $m_akses->findAll();
             $jenis_surat = $m_jenissurat->findAll();
 
             foreach ($menu as $m) {
                 $submenus = $m_sub->where('id_menu', $m['id_menu'])->findAll();
-                $allowedAccess = false;
+                $a = $m_akses->where('id_menu', $m['id_menu'])->findAll();
 
-                // Atur kondisi akses berdasarkan level pengguna
-                if (
-                    // ADMIN LLDIKTI 
-                    ($level == 1 && in_array($m['id_menu'], [1, 2]) && in_array($m['id_jenis_surat'], [1, 2])) ||
-                    // ADMIN PTS
-                    ($level == 2 && in_array($m['id_menu'], [3, 4]) && in_array($m['id_jenis_surat'], [3, 4])) ||
-                    // KEPALALEMBAGA
-                    ($level == 3 && in_array($m['id_menu'], [1, 2]) && in_array($m['id_jenis_surat'], [1, 2])) ||
-                    // PIMPINAN PTS
-                    ($level == 4 && in_array($m['id_menu'], [3, 4]) && in_array($m['id_jenis_surat'], [3, 4])) ||
-                    // PEGAWAI LLDIKTI 
-                    ($level == 5 && in_array($m['id_menu'], [1, 2]) && in_array($m['id_jenis_surat'], [3, 4]))
-                ) {
-                    $allowedAccess = true;
-                }
+                foreach ($a as $access) {
+                    foreach ($submenus as $sm) {
+                        foreach ($jenis_surat as $js) {
+                            $allowedAccess = false;
 
-                if ($allowedAccess) {
-            ?>
-                    <?php if ($submenus) { ?>
-                        <?php foreach ($submenus as $s) { ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?= base_url($s['url']); ?>">
-                                    <i class="<?= ($s['icon']); ?>"></i>
-                                    <span><?= $m['menu']; ?></span>
-                                    <span class="ml-5 badge float-right badge-danger">3</span> <!-- Contoh jumlah notifikasi -->
-                                </a>
-                            </li>
-                        <?php } ?>
-                    <?php } ?>
-            <?php
+                            // Atur kondisi akses berdasarkan level pengguna
+                            if (
+                                // ADMIN LLDIKTI 
+                                ($level == $access['id_level'] && $m['id_menu'] == $access['id_menu'] && $js['id_jenis_surat'] == $access['id_jenis_surat'])
+
+                            ) {
+                                $allowedAccess = true;
+                            }
+
+                            if ($allowedAccess) {
+                                if ($sm['is_active'] == 1) {
+                                    echo '<li class="nav-item">';
+                                    echo '<a class="nav-link" href="' . base_url($sm['url']) . '">';
+                                    echo '<i class="' . $sm['icon'] . '"></i>';
+                                    echo '<span>' . $m['menu'] . '</span>';
+                                    echo '<span class="badge float-right badge-danger">3</span>';
+                                    echo '</a>';
+                                    echo '</li>';
+                                }
+                            }
+                        }
+                    }
                 }
             }
             ?>
@@ -138,7 +135,7 @@
                             <a class="nav-link dropdown-toggle" href="<?= base_url('assets/'); ?>#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $uname; ?></span>
-                                <img class="img-profile rounded-circle" src="<?= base_url('assets/img/' . $pf); ?>">
+                                <img class="img-profile rounded-circle" src="<?= base_url('assets/img/' . $pf); ?>" width="50%">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

@@ -15,44 +15,41 @@ $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-// The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
-// where controller filters or CSRF protection are bypassed.
-// If you don't want to define all routes, please use the Auto Routing (Improved).
-// Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
-// $routes->setAutoRoute(false);
 
-/*
- * --------------------------------------------------------------------
- * Route Definitions
- * --------------------------------------------------------------------
- */
 
-// We get a performance increase by specifying the default
-// route since we don't have to scan directories.
+// ================================
+
+// LOGIN
 $routes->get('/', 'Auth\\Auth::index');
 $routes->get('/dashboard', 'Admin\\Dashboard::index');
-$routes->get('/surat_masuk', 'Admin\\Surat_masuk::index');
-$routes->get('/surat_keluar', 'Admin\\Surat_keluar::index');
+
+// AKSES LLDIKTI
+$routes->get('/surat_masukl', 'Admin\\Surat_masuk::index');
+$routes->get('/surat_keluarl', 'Admin\\Surat_keluar::index');
 $routes->get('/surat_tugas', 'Admin\\Surat_tugas::index');
 $routes->get('/nota_dinas', 'Admin\\Nota_dinas::index');
+
+// AKSES PTS 
+$routes->get('/surat_masukp', 'Admin\\Surat_masuk::suratMasukp');
+$routes->get('/surat_keluarp', 'Admin\\Surat_keluar::suratKeluarp');
+$routes->get('/surat_tugas', 'Admin\\Surat_tugas::index');
+$routes->get('/nota_dinas', 'Admin\\Nota_dinas::index');
+
+// MENU
+$routes->get('/menu', 'Super\\Menu::index');
+$routes->post('/createMenu', 'Super\Menu::create');
+$routes->post('/updateMenu', 'Super\\Menu::update');
+$routes->post('/deleteMenu', 'Super\\Menu::delete');
+
+
+
 
 
 $routes->add('login/prosesLogin', 'Auth\\Auth::prosesLogin');
 $routes->get('/logout', 'Auth\\Auth::logout');
 
-/*
- * --------------------------------------------------------------------
- * Additional Routing
- * --------------------------------------------------------------------
- *
- * There will often be times that you need additional routing and you
- * need it to be able to override any defaults in this file. Environment
- * based routes is one such time. require() additional route files here
- * to make that happen.
- *
- * You will have access to the $routes object within that file without
- * needing to reload it.
- */
+// ======================
+
 if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }

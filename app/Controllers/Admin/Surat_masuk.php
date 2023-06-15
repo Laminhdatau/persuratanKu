@@ -15,4 +15,10 @@ class Surat_masuk extends BaseController
         return view('surat_masuk/surat_masuk',$data);
     }
 
+    public function suratMasukp()
+    {
+        $data['title'] = "Surat Masuk";
+        return view('surat_masuk/surat_masuk',$data);
+    }
+
 }
