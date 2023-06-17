@@ -20,8 +20,8 @@ $routes->set404Override();
 // ================================
 
 // LOGIN
-$routes->get('/', 'Auth\\Auth::index');
-$routes->get('/dashboard', 'Admin\\Dashboard::index');
+
+$routes->get('/', 'Admin\\Dashboard::index');
 
 // AKSES LLDIKTI
 $routes->get('/surat_masukl', 'Admin\\Surat_masuk::index');
@@ -37,6 +37,7 @@ $routes->get('/nota_dinas', 'Admin\\Nota_dinas::index');
 
 // MENU
 $routes->get('/menu', 'Super\\Menu::index');
+$routes->get('/supermen', 'Super\\Levelakses::index');
 $routes->post('/createMenu', 'Super\Menu::create');
 $routes->post('/updateMenu', 'Super\\Menu::update');
 $routes->post('/deleteMenu', 'Super\\Menu::delete');
@@ -59,10 +60,6 @@ $routes->post('/createReff', 'Admin\Reffsurat::create');
 $routes->post('/updateReff', 'Admin\\Reffsurat::update');
 $routes->post('/deleteReff', 'Admin\\Reffsurat::delete');
 
-
-
-$routes->add('login/prosesLogin', 'Auth\\Auth::prosesLogin');
-$routes->get('/logout', 'Auth\\Auth::logout');
 
 // ======================
 

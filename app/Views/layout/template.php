@@ -85,7 +85,13 @@
 
                             if ($allowedAccess) {
                                 if ($sm['is_active'] == 1) {
-                                    echo '<li class="nav-item">';
+                                    if ($title == $sm['title']) {
+                                        echo '<li class="nav-item active">';
+                                    } else {
+
+                                        echo '<li class="nav-item">';
+                                    }
+
                                     echo '<a class="nav-link" href="' . base_url($sm['url']) . '">';
                                     echo '<i class="fas fa-fw fa-' . $sm['icon'] . '"></i>';
                                     echo '<span>' . $m['menu'] . '</span>';
@@ -221,6 +227,33 @@
 
     <!-- Page level custom scripts -->
     <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
+
+    <script>
+        $('.custom-file-input').on('change', function() {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+
+
+        $('.form-check-input').on('click', function() {
+            const id_menu = $(this).data('menu');
+            const id_level = $(this).data('level');
+
+            $.ajax({
+                url: "<?= base_url('admin/changeaccess'); ?>",
+                type: 'post',
+                data: {
+                    id_menu: id_menu,
+                    id_level: id_level
+                },
+                success: function() {
+                    document.location.href = "<?= base_url('supermen'); ?>" + id_level;
+                }
+            });
+
+        });
+    </script>
 
 </body>
 

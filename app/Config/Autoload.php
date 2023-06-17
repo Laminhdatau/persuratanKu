@@ -3,6 +3,7 @@
 namespace Config;
 
 use CodeIgniter\Config\AutoloadConfig;
+use App\Controllers\Super\Levelakses;
 
 /**
  * -------------------------------------------------------------------
@@ -43,10 +44,11 @@ class Autoload extends AutoloadConfig
         APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config'      => APPPATH . 'Config',
         'App'           => APPPATH,
-        'App\\Helpers'  => APPPATH . 'Helpers'
+        'App\\Helpers'  => APPPATH . 'Helpers',
+        'App\Models' => APPPATH . 'Models'
     ];
 
-   
+
     /**
      * -------------------------------------------------------------------
      * Class Map
@@ -64,7 +66,15 @@ class Autoload extends AutoloadConfig
      *
      * @var array<string, string>
      */
-    public $classmap = [];
+    public $classmap = [
+        // ...
+        'M_user' => APPPATH . 'Models/M_user.php', // Menambahkan model M_user
+        'M_level' => APPPATH . 'Models/M_level.php', // Menambahkan model M_level
+        'M_biodata' => APPPATH . 'Models/M_biodata.php', // Menambahkan model M_biodata
+
+        Levelakses::class => Levelakses::class
+    ];
+
 
     /**
      * -------------------------------------------------------------------
@@ -96,5 +106,5 @@ class Autoload extends AutoloadConfig
      * @var string[]
      * @phpstan-var list<string>
      */
-    public $helpers = ['form','AkuHelper'];
+    public $helpers = ['form', 'validation', 'AkuHelper'];
 }
