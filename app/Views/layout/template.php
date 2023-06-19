@@ -51,36 +51,93 @@
             </li>
 
             <?php
-            $session = session();
-            $uname = $session->get('nama_lengkap');
-            $pf = $session->get('foto');
-            $level = $session->get('id_level');
 
+            // Mendapatkan objek sesi
+            $session = service('session');
+
+            // Model
             $m_menu = new \App\Models\M_menu();
+            $m_formenu = new \App\Models\M_formenu();
             $m_sub = new \App\Models\M_submenu();
             $m_akses = new \App\Models\M_akses_menu();
             $m_jenissurat = new \App\Models\M_jenis_surat();
+            $m_pegawai = new \App\Models\M_pegawai();
+
+            use Myth\Auth\Models\UserModel;
+
+            $m_user = new UserModel();
+            // Mendapatkan pengguna yang sedang login berdasarkan user_id
+            // Mendapatkan pengguna yang sedang login berdasarkan user_id
+            $user = $m_user->find($session->get('logged_in.user_id'));
+
+            if ($user !== null) {
+                if (is_array($user)) {
+                    $user = $user[0];
+                }
+
+                // Jika pengguna ditemukan, dapatkan id
+                $userId = $user->id;
+                // dd($userId);
+            } else {
+                // Jika pengguna tidak ditemukan, lakukan penanganan kesalahan
+                // Misalnya, lempar pengecualian atau berikan pesan kesalahan
+                throw new Exception("Pengguna tidak ditemukan");
+            }
+
+
+
+            // Mendapatkan menu dan data lainnya
             $menu = $m_menu->findAll();
+            $formenu = $m_formenu->findAll();
             $sub = $m_sub->findAll();
             $aks = $m_akses->findAll();
             $jenis_surat = $m_jenissurat->findAll();
+            $pegawai = $m_pegawai->findAll();
 
+            // Menyimpan data pegawai ke dalam sesi
+            $session->set('logged_in.pegawai', $pegawai);
+
+
+            // Menyimpan data pegawai ke dalam sesi
+            $nl = '';
+            $pf = '';
+
+            if (!empty($pegawai)) {
+                foreach ($pegawai as $pegawaiData) {
+                    if (is_array($pegawaiData) && array_key_exists('nama_lengkap', $pegawaiData)) {
+                        $nl = $pegawaiData['nama_lengkap'];
+                    }
+
+                    if (is_array($pegawaiData) && array_key_exists('foto', $pegawaiData)) {
+                        $pf = $pegawaiData['foto'];
+                    }
+                }
+            }
+            // Looping menu
             foreach ($menu as $m) {
                 $submenus = $m_sub->where('id_menu', $m['id_menu'])->findAll();
-                $a = $m_akses->where('id_menu', $m['id_menu'])->findAll();
 
-                foreach ($a as $access) {
-                    foreach ($submenus as $sm) {
+                // Cek akses menu berdasarkan t_user_pegawai
+                foreach ($submenus as $sm) {
+                    foreach ($aks as $am) {
                         foreach ($jenis_surat as $js) {
                             $allowedAccess = false;
 
-                            // Atur kondisi akses berdasarkan level pengguna
-                            if (
-                                // ADMIN LLDIKTI 
-                                ($level == $access['id_level'] && $m['id_menu'] == $access['id_menu'] && $js['id_jenis_surat'] == $access['id_jenis_surat'])
+                            // Cek keberadaan data di t_user_pegawai
+                            $userPegawai = $m_formenu->where('id_user', $userId)
+                                ->where('id_pegawai', $session->get('logged_in.id_pegawai'))
+                                ->where('id_level', $am['id_level'])
+                                ->first();
 
-                            ) {
-                                $allowedAccess = true;
+                            if ($userPegawai) {
+                                // Cek apakah id_level ada di t_akses_menu
+                                $aksesMenu = $m_akses->where('id_level', $am['id_level'])
+                                    ->where('id_menu', $m['id_menu'])
+                                    ->first();
+
+                                if ($aksesMenu) {
+                                    $allowedAccess = true;
+                                }
                             }
 
                             if ($allowedAccess) {
@@ -88,7 +145,6 @@
                                     if ($title == $sm['title']) {
                                         echo '<li class="nav-item active">';
                                     } else {
-
                                         echo '<li class="nav-item">';
                                     }
 
@@ -105,9 +161,6 @@
                 }
             }
             ?>
-
-
-
 
 
             <!-- Sidebar Toggler (Sidebar) -->
@@ -140,7 +193,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="<?= base_url('assets/'); ?>#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $uname; ?></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $nl; ?></span>
                                 <img class="img-profile rounded-circle" src="<?= base_url('assets/img/' . $pf); ?>" width="50%">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -151,10 +204,17 @@
                                 </a>
 
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
+                                <?PHP if (logged_in()) : ?>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                <?php else : ?>
+                                    <a class="dropdown-item" href="<?= base_url('login'); ?>">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Login
+                                    </a>
+                                <?php endif; ?>
                             </div>
                         </li>
 

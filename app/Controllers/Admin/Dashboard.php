@@ -3,17 +3,24 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
-use App\Controllers\Auth\Auth;
+
+use App\Models\M_pegawai;
+use \App\Models\M_formenu;
 
 class Dashboard extends BaseController
 {
     public function index()
     {
-        $data['title'] = "Dashboard";
-        $data['user'] = new Auth();
+        $m_menu = new M_formenu();
+        $m_pegawai = new M_pegawai(); // Gunakan model M_pegawai
 
+        $menu = $m_menu->findAll();
+        $pegawai = $m_pegawai->findAll(); // Ambil data pegawai dari model M_pegawai
+
+        $data['title'] = "Dashboard";
+        $data['menu'] = $menu;
+        $data['pegawai'] = $pegawai;
+        // dd($data);
         return view('dashboard', $data);
     }
-
-    // Contoh fung
 }
