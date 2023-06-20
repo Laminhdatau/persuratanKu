@@ -5,13 +5,13 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 
 use App\Models\M_pegawai;
-use \App\Models\M_formenu;
+use \App\Models\M_userpegawai;
 
 class Dashboard extends BaseController
 {
     public function index()
     {
-        $m_menu = new M_formenu();
+        $m_menu = new M_userpegawai();
         $m_pegawai = new M_pegawai(); // Gunakan model M_pegawai
 
         $menu = $m_menu->findAll();

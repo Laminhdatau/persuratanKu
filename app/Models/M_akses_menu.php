@@ -8,5 +8,5 @@ class M_akses_menu extends Model
 {
     protected $table = 't_akses_menu';
     protected $primaryKey = 'id_akses_menu';
-    protected $allowedFields = ['id_level', 'id_menu','id_jenis_surat'];
+    protected $allowedFields = ['id_auth_group', 'id_menu', 'id_jenis_surat'];
 }

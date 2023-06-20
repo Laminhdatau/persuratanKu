@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class M_formenu extends Model
+class M_userpegawai extends Model
 {
     protected $table = 't_user_pegawai';
-    protected $allowedFields = ['id_user', 'id_level', 'id_pegawai'];
+    protected $allowedFields = ['id_user', 'id_pegawai', 'id_auth_group'];
 
     public function getUserPegawai($idUser)
     {

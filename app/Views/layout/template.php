@@ -44,123 +44,105 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= base_url('dashboard'); ?>">
+                <a class="nav-link" href="<?= base_url(); ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-
             <?php
-
-            // Mendapatkan objek sesi
             $session = service('session');
+
+            // Mendapatkan objek Myth\Auth\Authentication\AuthenticationInterface
+            $authentication = service('authentication');
 
             // Model
             $m_menu = new \App\Models\M_menu();
-            $m_formenu = new \App\Models\M_formenu();
+            $m_group = new \App\Models\M_groups();
+            $m_userpegawai = new \App\Models\M_userpegawai();
             $m_sub = new \App\Models\M_submenu();
             $m_akses = new \App\Models\M_akses_menu();
             $m_jenissurat = new \App\Models\M_jenis_surat();
             $m_pegawai = new \App\Models\M_pegawai();
+            $m_user = new \App\Models\UserModel();
 
-            use Myth\Auth\Models\UserModel;
-
-            $m_user = new UserModel();
-            // Mendapatkan pengguna yang sedang login berdasarkan user_id
-            // Mendapatkan pengguna yang sedang login berdasarkan user_id
-            $user = $m_user->find($session->get('logged_in.user_id'));
-
-            if ($user !== null) {
-                if (is_array($user)) {
-                    $user = $user[0];
-                }
-
-                // Jika pengguna ditemukan, dapatkan id
+            // Memeriksa apakah pengguna sedang login
+            if ($authentication->check()) {
+                // Pengguna sedang login
+                $user = $authentication->user();
+                // Mendapatkan ID pengguna yang sedang login
                 $userId = $user->id;
-                // dd($userId);
-            } else {
-                // Jika pengguna tidak ditemukan, lakukan penanganan kesalahan
-                // Misalnya, lempar pengecualian atau berikan pesan kesalahan
-                throw new Exception("Pengguna tidak ditemukan");
-            }
 
+                // Mendapatkan menu dan data lainnya
+                $menu = $m_menu->findAll();
+                $group = $m_group->findAll();
+                $userpegawai = $m_userpegawai->findAll();
+                $sub = $m_sub->findAll();
+                $aksesmenus = $m_akses->findAll();
+                $jenis_surat = $m_jenissurat->findAll();
+                $pegawai = $m_pegawai->findAll();
 
+                // Menyimpan data pegawai ke dalam sesi
+                $session->set('logged_in.pegawai', $pegawai);
 
-            // Mendapatkan menu dan data lainnya
-            $menu = $m_menu->findAll();
-            $formenu = $m_formenu->findAll();
-            $sub = $m_sub->findAll();
-            $aks = $m_akses->findAll();
-            $jenis_surat = $m_jenissurat->findAll();
-            $pegawai = $m_pegawai->findAll();
+                // Mendapatkan pegawai berdasarkan id pengguna yang sedang login
+                $userPegawai = $m_userpegawai->where('id_user', $userId)->first();
 
-            // Menyimpan data pegawai ke dalam sesi
-            $session->set('logged_in.pegawai', $pegawai);
+                if ($userPegawai) {
+                    $pegawaiId = $userPegawai['id_pegawai'];
 
+                    // Mendapatkan data pegawai berdasarkan id
+                    $pegawai = $m_pegawai->find($pegawaiId);
 
-            // Menyimpan data pegawai ke dalam sesi
-            $nl = '';
-            $pf = '';
-
-            if (!empty($pegawai)) {
-                foreach ($pegawai as $pegawaiData) {
-                    if (is_array($pegawaiData) && array_key_exists('nama_lengkap', $pegawaiData)) {
-                        $nl = $pegawaiData['nama_lengkap'];
+                    if ($pegawai) {
+                        $nl = $pegawai['nama_lengkap'];
+                        $pf = $pegawai['foto'];
+                    } else {
+                        $nl = '';
+                        $pf = '';
                     }
 
-                    if (is_array($pegawaiData) && array_key_exists('foto', $pegawaiData)) {
-                        $pf = $pegawaiData['foto'];
-                    }
-                }
-            }
-            // Looping menu
-            foreach ($menu as $m) {
-                $submenus = $m_sub->where('id_menu', $m['id_menu'])->findAll();
+                    // Looping menu
+                    foreach ($menu as $m) {
+                        $submenus = $m_sub->where('id_menu', $m['id_menu'])->findAll();
+                        $allowedAccess = false;
 
-                // Cek akses menu berdasarkan t_user_pegawai
-                foreach ($submenus as $sm) {
-                    foreach ($aks as $am) {
-                        foreach ($jenis_surat as $js) {
-                            $allowedAccess = false;
-
-                            // Cek keberadaan data di t_user_pegawai
-                            $userPegawai = $m_formenu->where('id_user', $userId)
-                                ->where('id_pegawai', $session->get('logged_in.id_pegawai'))
-                                ->where('id_level', $am['id_level'])
+                        // Cek akses menu berdasarkan t_user_pegawai
+                        foreach ($submenus as $sm) {
+                            $idAuthGroupUserPegawai = $userPegawai['id_auth_group'];
+                            $aksesmenu = $m_akses->where('id_auth_group', $idAuthGroupUserPegawai)
+                                ->where('id_menu', $m['id_menu'])
                                 ->first();
 
-                            if ($userPegawai) {
-                                // Cek apakah id_level ada di t_akses_menu
-                                $aksesMenu = $m_akses->where('id_level', $am['id_level'])
-                                    ->where('id_menu', $m['id_menu'])
-                                    ->first();
+                            if ($aksesmenu) {
+                                $allowedAccess = true;
+                                break;
+                            }
+                        }
 
-                                if ($aksesMenu) {
-                                    $allowedAccess = true;
-                                }
+                        if ($allowedAccess) {
+                            if ($title == $m['menu']) {
+                                echo '<li class="nav-item active">';
+                            } else {
+                                echo '<li class="nav-item">';
                             }
 
-                            if ($allowedAccess) {
-                                if ($sm['is_active'] == 1) {
-                                    if ($title == $sm['title']) {
-                                        echo '<li class="nav-item active">';
-                                    } else {
-                                        echo '<li class="nav-item">';
-                                    }
-
-                                    echo '<a class="nav-link" href="' . base_url($sm['url']) . '">';
-                                    echo '<i class="fas fa-fw fa-' . $sm['icon'] . '"></i>';
-                                    echo '<span>' . $m['menu'] . '</span>';
-                                    echo '<span class="badge float-right badge-danger">3</span>';
-                                    echo '</a>';
-                                    echo '</li>';
-                                }
-                            }
+                            echo '<a class="nav-link" href="' . base_url($sm['url']) . '">';
+                            echo '<i class="fas fa-fw fa-' . $sm['icon'] . '"></i>';
+                            echo '<span>' . $m['menu'] . '</span>';
+                            echo '<span class="badge float-right badge-danger">3</span>';
+                            echo '</a>';
+                            echo '</li>';
                         }
                     }
                 }
+            } else {
+                redirect(base_url('login'));
             }
+
             ?>
+
+
+
 
 
             <!-- Sidebar Toggler (Sidebar) -->
@@ -193,8 +175,8 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="<?= base_url('assets/'); ?>#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $nl; ?></span>
-                                <img class="img-profile rounded-circle" src="<?= base_url('assets/img/' . $pf); ?>" width="50%">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $nl ?? ''; ?></span>
+                                <img class="img-profile rounded-circle" src="<?= base_url('assets/img/'); ?><?= $pf ?? ''; ?>" width="50%">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
