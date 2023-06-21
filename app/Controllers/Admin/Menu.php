@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Super;
+namespace App\Controllers\Admin;
 
 use App\Models\M_menu;
 use App\Controllers\BaseController;
@@ -18,7 +18,7 @@ class Menu extends BaseController
         $data['title'] = "Menu";
         $data['menu'] = $menu;
 
-        return view('menu/menu', $data);
+        return view('private/manmenu/menu', $data);
     }
 
 

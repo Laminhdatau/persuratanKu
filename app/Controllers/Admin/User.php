@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Super;
+namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\M_user;
@@ -26,7 +26,7 @@ class User extends BaseController
         $data['title'] = "Menu";
         $data['user'] = $user;
 
-        return view('menu/menu', $data);
+        return view('private/manmenu/menu', $data);
     }
 
 

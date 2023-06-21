@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Super;
+namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use CodeIgniter\Database\ConnectionInterface;
@@ -24,7 +24,7 @@ class Levelakses extends BaseController
         $query = $this->db->table('t_menu')->where('id_level !=', 1)->get();
         $data['menu'] = $query->getResultArray();
 
-        return view('admin/levelakses', $data);
+        return view('private/manmenu/levelakses', $data);
     }
 
     public function ubahAkses()

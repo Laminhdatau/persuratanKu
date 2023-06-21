@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Super;
+namespace App\Controllers\Admin;
 
 use App\Models\M_menu;
 use App\Controllers\BaseController;
@@ -27,7 +27,7 @@ class Submenu extends BaseController
         $data['submenu'] = $sub;
         $data['menu'] = $menu;
 
-        return view('menu/submenu', $data);
+        return view('private/manmenu/submenu', $data);
     }
 
 

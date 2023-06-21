@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Admin;
+namespace App\Controllers\Users;
 
 use App\Controllers\BaseController;
 use App\Models\M_reff;
@@ -16,7 +16,7 @@ class Reffsurat extends BaseController
 
         $data['title'] = "Referensi Surat";
         $data['reff'] = $reff;
-        return view('admin/reffsurat', $data);
+        return view('private/mansurat/reffsurat', $data);
     }
 
     public function create()
