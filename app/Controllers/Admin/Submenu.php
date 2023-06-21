@@ -8,20 +8,18 @@ use App\Models\M_submenu;
 
 class Submenu extends BaseController
 {
-
     public function index()
     {
         $db = \Config\Database::connect();
 
         $query = $db->query('SELECT s.*, m.menu 
-                        FROM t_sub_menu s
-                        JOIN t_menu m ON s.id_menu = m.id_menu');
+                            FROM t_sub_menu s
+                            JOIN t_menu m ON s.id_menu = m.id_menu');
 
         $sub = $query->getResultArray();
         $m_menu = new M_menu();
 
         $menu = $m_menu->findAll();
-
 
         $data['title'] = "Sub Menu";
         $data['submenu'] = $sub;
@@ -29,8 +27,6 @@ class Submenu extends BaseController
 
         return view('private/manmenu/submenu', $data);
     }
-
-
 
     public function create()
     {
@@ -44,7 +40,9 @@ class Submenu extends BaseController
             'icon' => $this->request->getPost('icon'),
             'is_active' => $this->request->getPost('is_active')
         ];
+
         $m_sub->insert($data);
+
         return redirect()->to(base_url('submenu'))->with('success', 'Data berhasil disimpan.');
     }
 
@@ -59,10 +57,11 @@ class Submenu extends BaseController
             'icon' => $this->request->getPost('icon'),
             'is_active' => $this->request->getPost('is_active')
         ];
+
         $m_sub->update($id, $data);
 
         // Return a success message
-        return redirect()->to(base_url('submenu'))->with('success', 'Data Berhasil di update');
+        return redirect()->to(base_url('submenu'))->with('success', 'Data berhasil diupdate.');
     }
 
     public function delete()
@@ -73,6 +72,6 @@ class Submenu extends BaseController
         $m_sub->where('id_sub_menu', $id)->delete();
 
         // Return a success message
-        return redirect()->to(base_url('submenu'))->with('success', 'Data is deleted');
+        return redirect()->to(base_url('submenu'))->with('success', 'Data berhasil dihapus.');
     }
 }

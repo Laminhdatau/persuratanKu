@@ -9,6 +9,9 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+use Config\Database;
+
+
 /**
  * Class BaseController
  *
@@ -54,5 +57,15 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
+    }
+
+
+    protected $dbDefault;
+    protected $dbSecondary;
+
+    public function __construct()
+    {
+        $this->dbDefault = Database::connect(); // Koneksi Database Default
+        $this->dbSecondary = Database::connect('secondary'); // Koneksi Database Sekunder
     }
 }

@@ -7,10 +7,10 @@ use CodeIgniter\Model;
 class M_surat extends Model
 {
     protected $table = 't_surat_lldikti';
-    protected $primaryKey = 'id';
-    protected $allowedFields = ['name', 'price', 'description'];
+    protected $primaryKey = 'id_surat_lldikti';
+    protected $allowedFields = ['id_reff_surat', 'id_sifat', 'tgl_surat', 'id_jenis_surat', 'id_instansi', 'id_status', 'tembusan', 'filex'];
 
-    public function getProduct($id = null)
+    public function getSurat($id = null)
     {
         if ($id === null) {
             return $this->findAll();
@@ -19,17 +19,17 @@ class M_surat extends Model
         return $this->find($id);
     }
 
-    public function createProduct($data)
+    public function createSurat($data)
     {
         return $this->insert($data);
     }
 
-    public function updateProduct($id, $data)
+    public function updateSurat($id, $data)
     {
         return $this->update($id, $data);
     }
 
-    public function deleteProduct($id)
+    public function deleteSurat($id)
     {
         return $this->delete($id);
     }

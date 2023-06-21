@@ -4,65 +4,86 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\M_user;
+
 class User extends BaseController
 {
 
 
     public function index()
     {
-        $db = \Config\Database::connect();
+        $M_user = new M_user();
+        $query = $M_user->query("SELECT *
+        FROM db_persuratan.t_user_pegawai
+        JOIN db_pegawai.t_pegawai ON db_pegawai.t_pegawai.id_pegawai = db_persuratan.t_user_pegawai.id_pegawai
+        JOIN db_persuratan.users AS u ON u.id = db_persuratan.t_user_pegawai.id_user
+        JOIN db_persuratan.auth_groups AS g ON g.id = db_persuratan.t_user_pegawai.id_auth_group");
 
-        $query = $db->query('SELECT u.id_user,u.foto,u.email,u.password,p.id_pegawai,p.nip,p.nip,p.pangkat,p.golongan,p.jabatan,p.id_instansi,b.id_biodata,b.nama_lengkap,b.telp,i.nm_instansi
-        from t_user u
-        ,t_pegawai p 
-        ,t_biodata b 
-        ,t_instansi i
-        where u.id_biodata=b.id_biodata
-        and p.id_biodata=b.id_biodata
-        and i.id_instansi=p.id_instansi;');
+        $users = $query->getResultArray();
 
-        $user = $query->getResultArray();
 
-        $data['title'] = "Menu";
-        $data['user'] = $user;
+        $data = [
+            'title' => 'Users',
+            'users' => $users
+        ];
 
-        return view('private/manmenu/menu', $data);
+
+        // dd($data);
+
+        return view('private/manuser/users', $data);
     }
-
 
     public function create()
     {
-        $m_user = new M_user();
+        $M_user = new M_user();
 
         $data = [
-            'id_user' => $this->request->getPost('id_user'),
-            'menu' => $this->request->getPost('menu')
+            'username' => $this->request->getPost('username'),
+            'email' => $this->request->getPost('email'),
+            'password' => $this->request->getPost('password')
         ];
-        $m_user->insert($data);
-        return redirect()->to(base_url('menu'))->with('success', 'Data berhasil disimpan.');
+
+        $M_user->createUser($data);
+
+        return redirect()->to(base_url('admin/user'))->with('success', 'User created successfully.');
     }
 
-    public function update()
+    public function edit($id)
     {
-        $m_user = new M_user();
-        $id = $this->request->getPost('id_menu');
+        $M_user = new M_user();
+        $user = $M_user->getUserById($id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+
         $data = [
-            'menu' => $this->request->getPost('menu')
+            'title' => 'Edit User',
+            'user' => $user
         ];
-        $m_user->update($id, $data);
 
-        // Return a success message
-        return redirect()->to(base_url('menu'))->with('success', 'Data Berhasil di update');
+        return view('admin/user/edit', $data);
     }
 
-    public function delete()
+    public function update($id)
     {
-        $m_user = new M_user();
-        $id = $this->request->getPost('id_menu');
+        $M_user = new M_user();
 
-        $m_user->where('id_menu', $id)->delete();
+        $data = [
+            'username' => $this->request->getPost('username'),
+            'email' => $this->request->getPost('email'),
+            'password' => $this->request->getPost('password')
+        ];
 
-        // Return a success message
-        return redirect()->to(base_url('menu'))->with('success', 'Data is deleted');
+        $M_user->updateUser($id, $data);
+
+        return redirect()->to(base_url('admin/user'))->with('success', 'User updated successfully.');
+    }
+
+    public function delete($id)
+    {
+        $M_user = new M_user();
+        $M_user->deleteUser($id);
+
+        return redirect()->to(base_url('admin/user'))->with('success', 'User deleted successfully.');
     }
 }

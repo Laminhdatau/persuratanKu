@@ -7,11 +7,8 @@ use App\Controllers\BaseController;
 
 class Menu extends BaseController
 {
-   
-
     public function index()
     {
-
         $m_menu = new M_menu();
         $menu = $m_menu->findAll();
 
@@ -21,7 +18,6 @@ class Menu extends BaseController
         return view('private/manmenu/menu', $data);
     }
 
-
     public function create()
     {
         $m_menu = new M_menu();
@@ -30,7 +26,9 @@ class Menu extends BaseController
             'id_menu' => $this->request->getPost('id_menu'),
             'menu' => $this->request->getPost('menu')
         ];
+
         $m_menu->insert($data);
+
         return redirect()->to(base_url('menu'))->with('success', 'Data berhasil disimpan.');
     }
 
@@ -44,7 +42,7 @@ class Menu extends BaseController
         $m_menu->update($id, $data);
 
         // Return a success message
-        return redirect()->to(base_url('menu'))->with('success', 'Data Berhasil di update');
+        return redirect()->to(base_url('menu'))->with('success', 'Data berhasil diupdate.');
     }
 
     public function delete()
@@ -55,6 +53,6 @@ class Menu extends BaseController
         $m_menu->where('id_menu', $id)->delete();
 
         // Return a success message
-        return redirect()->to(base_url('menu'))->with('success', 'Data is deleted');
+        return redirect()->to(base_url('menu'))->with('success', 'Data berhasil dihapus.');
     }
 }

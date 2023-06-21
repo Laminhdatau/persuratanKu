@@ -18,6 +18,7 @@
                             <th>Foto</th>
                             <th>Nama Lengkap</th>
                             <th>Email</th>
+                            <th>Instansi</th>
                             <th>Level</th>
                             <th>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
@@ -34,7 +35,8 @@
                                 <td><img src="<?= base_url('assets/img/' . $u['foto']); ?>" alt="" width="40%"></td>
                                 <td><?= $u['nama_lengkap']; ?></td>
                                 <td><?= $u['email']; ?></td>
-                                <td><?= $u['Level']; ?></td>
+                                <td><?= $u['email']; ?></td>
+                                <td>a</td>
                                 <td>
                                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal<?= $u['id_user'] ?>">
                                         <i class="fas fa-edit"></i>
@@ -63,7 +65,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="<?= base_url('/createReff'); ?>" method="post">
+                                <form action="<?= base_url('/createuser'); ?>" method="post">
                                     <div class="form-group">
                                         <label for="menu">Foto</label>
                                         <input type="hidden" class="form-control" id="id_user" name="id_user" required>
@@ -74,9 +76,9 @@
                                         <label for="menu">Nama Lengkap</label>
                                         <select name="id_biodata" id="">
                                             <option value="">Pilih Nama</option>
-                                            <?php foreach ($bio as $b) { ?>
-                                                <option value="<?= $b['id_biodata']; ?>"><?= $b['nama_lengkap']; ?> || <?= $b['jabatan']; ?></option>
-                                            <?php } ?>
+                                            <!-- <php foreach ($bio as $b) { ?>
+                                                <option value="<= $b['id_biodata']; ?>"><= $b['nama_lengkap']; ?> || <= $b['jabatan']; ?></option>
+                                            <php } ?> -->
                                         </select>
                                     </div>
                             </div>
@@ -90,10 +92,10 @@
                 </div>
 
                 <!-- Modal Edit Menu -->
-                <?php foreach ($reff as $r) {
+                <?php foreach ($user as $r) {
 
                 ?>
-                    <div class="modal fade" id="editModal<?= $r['id_reff_surat'] ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="editModal<?= $r['id_user_surat'] ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -103,10 +105,10 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="<?= base_url('/updateReff'); ?>" method="post">
+                                    <form action="<?= base_url('/updateuser'); ?>" method="post">
                                         <div class="form-group">
                                             <label for="menu">Nomor Surat</label>
-                                            <input type="hidden" class="form-control" id="id_reff_surat" name="id_reff_surat" value="<?= $r['id_reff_surat']; ?>" required>
+                                            <input type="hidden" class="form-control" id="id_user_surat" name="id_user_surat" value="<?= $r['id_user_surat']; ?>" required>
                                             <input type="text" class="form-control" id="nomor_surat" value="<?= $r['nomor_surat']; ?>" name="nomor_surat" required>
                                         </div>
 
@@ -127,9 +129,9 @@
 
                 <!-- Modal Konfirmasi Hapus Menu -->
 
-                <?php foreach ($reff as $r) { ?>
+                <?php foreach ($user as $r) { ?>
 
-                    <div class="modal fade" id="deleteModal<?= $r['id_reff_surat'] ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="deleteModal<?= $r['id_user_surat'] ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -138,9 +140,9 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form action="<?= base_url('/deleteReff') ?>" method="post">
+                                <form action="<?= base_url('/deleteuser') ?>" method="post">
                                     <div class="modal-body">
-                                        <input type="hidden" class="form-control" id="editMenu" name="id_reff_surat" value="<?= $r['id_reff_surat']; ?>" required>
+                                        <input type="hidden" class="form-control" id="editMenu" name="id_user_surat" value="<?= $r['id_user_surat']; ?>" required>
 
                                         <p>Apakah Anda yakin ingin menghapus menu ini?</p>
                                     </div>

@@ -48,6 +48,13 @@ $routes->post('/createSubMenu', 'Admin\Submenu::create');
 $routes->post('/updateSubMenu', 'Admin\\Submenu::update');
 $routes->post('/deleteSubMenu', 'Admin\\Submenu::delete');
 
+
+// USERS
+$routes->get('/akun', 'Admin\\User::index');
+$routes->post('/createUser', 'Admin\User::create');
+$routes->post('/updateUser', 'Admin\\User::update');
+$routes->post('/deleteUser', 'Admin\\User::delete');
+
 // Akses Menu
 $routes->get('/akses', 'Admin\\Aksesmenu::index');
 $routes->post('/createAksesMenu', 'Admin\Aksesmenu::create');
