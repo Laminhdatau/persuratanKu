@@ -15,11 +15,11 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Foto</th>
+                            <th class="col-1">Foto</th>
                             <th>Nama Lengkap</th>
+                            <th>Jabatan</th>
                             <th>Email</th>
                             <th>Instansi</th>
-                            <th>Level</th>
                             <th>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
                                     <i class="fas fa-plus"></i>
@@ -32,12 +32,16 @@
                         foreach ($users as $u) { ?>
                             <tr>
                                 <td><?= $no++; ?></td>
-                                <td><img src="<?= base_url('assets/img/' . $u['foto']); ?>" alt="" width="40%"></td>
+                                <td><img src="<?= base_url('assets/img/' . $u['foto']); ?>" alt="" width="50%"></td>
                                 <td><?= $u['nama_lengkap']; ?></td>
+                                <td><?= $u['jabatan']; ?></td>
                                 <td><?= $u['email']; ?></td>
-                                <td><?= $u['email']; ?></td>
-                                <td>a</td>
+                                <td><?= $u['nm_instansi']; ?></td>
                                 <td>
+                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal<?= $u['id_user'] ?>">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    ||
                                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal<?= $u['id_user'] ?>">
                                         <i class="fas fa-edit"></i>
                                     </button>
@@ -92,10 +96,10 @@
                 </div>
 
                 <!-- Modal Edit Menu -->
-                <?php foreach ($user as $r) {
+                <?php foreach ($users as $u) {
 
                 ?>
-                    <div class="modal fade" id="editModal<?= $r['id_user_surat'] ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="editModal<?= $u['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -108,13 +112,13 @@
                                     <form action="<?= base_url('/updateuser'); ?>" method="post">
                                         <div class="form-group">
                                             <label for="menu">Nomor Surat</label>
-                                            <input type="hidden" class="form-control" id="id_user_surat" name="id_user_surat" value="<?= $r['id_user_surat']; ?>" required>
-                                            <input type="text" class="form-control" id="nomor_surat" value="<?= $r['nomor_surat']; ?>" name="nomor_surat" required>
+                                            <input type="hidden" class="form-control" id="id_user_surat" name="id_user_surat" value="<?= $u['id_user']; ?>" required>
+                                            <input type="text" class="form-control" id="nomor_surat" value="<?= $u['nm_instansi']; ?>" name="nm_instansi" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="menu">Perihal</label>
-                                            <input type="text" class="form-control" value="<?= $r['perihal']; ?>" id="perihal" name="perihal" required>
+                                            <input type="text" class="form-control" value="<?= $u['nm_instansi']; ?>" id="perihal" name="perihal" required>
                                         </div>
                                 </div>
                                 <div class="modal-footer">
@@ -129,9 +133,9 @@
 
                 <!-- Modal Konfirmasi Hapus Menu -->
 
-                <?php foreach ($user as $r) { ?>
+                <?php foreach ($users as $u) { ?>
 
-                    <div class="modal fade" id="deleteModal<?= $r['id_user_surat'] ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="deleteModal<?= $u['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -142,7 +146,7 @@
                                 </div>
                                 <form action="<?= base_url('/deleteuser') ?>" method="post">
                                     <div class="modal-body">
-                                        <input type="hidden" class="form-control" id="editMenu" name="id_user_surat" value="<?= $r['id_user_surat']; ?>" required>
+                                        <input type="hidden" class="form-control" id="editMenu" name="id_user_surat" value="<?= $u['id']; ?>" required>
 
                                         <p>Apakah Anda yakin ingin menghapus menu ini?</p>
                                     </div>

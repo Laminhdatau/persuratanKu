@@ -16,7 +16,9 @@ class User extends BaseController
         FROM db_persuratan.t_user_pegawai
         JOIN db_pegawai.t_pegawai ON db_pegawai.t_pegawai.id_pegawai = db_persuratan.t_user_pegawai.id_pegawai
         JOIN db_persuratan.users AS u ON u.id = db_persuratan.t_user_pegawai.id_user
-        JOIN db_persuratan.auth_groups AS g ON g.id = db_persuratan.t_user_pegawai.id_auth_group");
+        JOIN db_persuratan.auth_groups AS g ON g.id = db_persuratan.t_user_pegawai.id_auth_group
+        JOIN db_persuratan.t_instansi AS i ON i.id_instansi = db_pegawai.t_pegawai.id_instansi
+        ");
 
         $users = $query->getResultArray();
 
